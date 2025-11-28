@@ -50,7 +50,7 @@ function MailIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
 export const metadata: Metadata = {
   title: 'About',
   description:
-    'I’m Pawandeep. [Todo]',
+    'I’m Pawandeep.',
 }
 
 export default function About() {
@@ -69,58 +69,65 @@ export default function About() {
         </div>
         <div className="lg:order-first lg:row-span-2">
           <h1 className="text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100">
-            I’m Spencer Sharp. I live in New York City, where I design the
-            future.
+            I’m Pawandeep from 🇸🇬. I love building things that make people’s lives a little better.
           </h1>
           <div className="mt-6 space-y-7 text-base text-zinc-600 dark:text-zinc-400">
             <p>
-              I’ve loved making things for as long as I can remember, and wrote
-              my first program when I was 6 years old, just two weeks after my
-              mom brought home the brand new Macintosh LC 550 that I taught
-              myself to type on.
+              My love for technology began long before I ever wrote a line of code. 
+              I still remember tinkering with an old Windows 98 computer and connecting 
+              to the internet through that nostalgic dial-up tone. 
+              I was endlessly curious about how it all worked. Then one day, I saw the news about the launch of the first iPhone 
+              — and I was completely hooked. I knew I wanted to be part of this world where creativity meets technology.
             </p>
             <p>
-              The only thing I loved more than computers as a kid was space.
-              When I was 8, I climbed the 40-foot oak tree at the back of our
-              yard while wearing my older sister’s motorcycle helmet, counted
-              down from three, and jumped — hoping the tree was tall enough that
-              with just a bit of momentum I’d be able to get to orbit.
+             I started programming in 2015 during my Polytechnic years — three years of exploration, late-night coding sessions, 
+             and countless “aha!” moments. 
+             I didn’t come from an elite academic background (PSLE 150 club here 🙌), 
+             but I’ve always believed that passion and perseverance matter more than grades. 
+             My goal has always been simple: to learn, to help others, and to make people smile through the work I do.
             </p>
             <p>
-              I spent the next few summers indoors working on a rocket design,
-              while I recovered from the multiple surgeries it took to fix my
-              badly broken legs. It took nine iterations, but when I was 15 I
-              sent my dad’s Blackberry into orbit and was able to transmit a
-              photo back down to our family computer from space.
+              Doing well in Polytechnic opened an unexpected door — a full scholarship to pursue a degree in Computer Science at university. 
+              It was more than just an academic journey; it was about stepping out of my comfort zone, 
+              surrounding myself with people who inspired me, and diving deep into entrepreneurship and innovation.
             </p>
             <p>
-              Today, I’m the founder of Planetaria, where we’re working on
-              civilian space suits and manned shuttle kits you can assemble at
-              home so that the next generation of kids really <em>can</em> make
-              it to orbit — from the comfort of their own backyards.
+              During my four years at university, I had the incredible opportunity to study abroad 
+              — from the creative culture of Sweden to the dynamic energy of the United States. 
+              Those experiences taught me the beauty of diversity, the importance of empathy, and how technology should ultimately serve real human needs.
             </p>
+            <p>
+              In 2018, I was diagnosed with glaucoma — a chronic condition that deeply changed my perspective. 
+              It was tough, but it also reminded me to slow down, take care of my health, and use my experience to raise awareness. 
+              It made me even more determined to design solutions that make a difference in people’s lives.
+            </p>
+            <p>
+              Today, I continue to be driven by curiosity, empathy, and a desire to build meaningful things that bring people together 
+              and make everyday life just a little better.
+            </p>
+            {/* <p>
+              When I’m not coding, you’ll probably find me watching shows across genres (current 2025 favorite: The Pitt and Adolescence), going for walks in the park, or volunteering with Repair Kopitiam on weekends. And sometimes, I’ll just be coding random ideas — not because I have to, but 
+              because I genuinely love keeping my mind active and exploring what’s next.
+            </p> */}
           </div>
         </div>
         <div className="lg:pl-20">
           <ul role="list">
-            <SocialLink href="#" icon={XIcon}>
+            <SocialLink href="https://x.com/pss_coder?s=21" icon={XIcon}>
               Follow on X
             </SocialLink>
-            <SocialLink href="#" icon={InstagramIcon} className="mt-4">
-              Follow on Instagram
-            </SocialLink>
-            <SocialLink href="#" icon={GitHubIcon} className="mt-4">
+            <SocialLink href="https://github.com/pss-coder" icon={GitHubIcon} className="mt-4">
               Follow on GitHub
             </SocialLink>
-            <SocialLink href="#" icon={LinkedInIcon} className="mt-4">
+            <SocialLink href="https://www.linkedin.com/in/pss-coder/" icon={LinkedInIcon} className="mt-4">
               Follow on LinkedIn
             </SocialLink>
             <SocialLink
-              href="mailto:spencer@planetaria.tech"
+              href="mailto:pawandeepse@me.com"
               icon={MailIcon}
               className="mt-8 border-t border-zinc-100 pt-8 dark:border-zinc-700/40"
             >
-              spencer@planetaria.tech
+              pawandeepse@me.com
             </SocialLink>
           </ul>
         </div>

@@ -4,6 +4,10 @@
 @plugin '@tailwindcss/typography';
 @config '../../typography.ts';
 
+.animate-scroll:hover {
+  animation-play-state: paused;
+}
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {

@@ -51,3 +51,13 @@ To learn more about the technologies used in this site template, see the followi
 - Port over data from notion portfolio over
 
 - include my articles from USP??
+
+
+## TODO UPDATE
+
+- Update Projects Link First
+- Remove Articles
+- Update About
+
+- Add a counter to page visits
+- create analytics for download CV clicked
