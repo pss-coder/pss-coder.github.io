@@ -1,9 +1,7 @@
-import Image, { type ImageProps } from 'next/image'
+import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
 
-import { Button } from '@/components/Button'
-import { Card } from '@/components/Card'
 import { Container } from '@/components/Container'
 import {
   GitHubIcon,
@@ -16,11 +14,11 @@ import image2 from '@/images/photos/image-2.jpeg'
 import image3 from '@/images/photos/image-3.jpeg'
 import image4 from '@/images/photos/image-4.jpeg'
 import image5 from '@/images/photos/image-5.jpeg'
-// import { type ArticleWithSlug, getAllArticles } from '@/lib/articles'
-import { formatDate } from '@/lib/formatDate'
-import { useEffect } from 'react'
-
-import dxdhub from '@/images/logos/dxdhub.png'
+import {
+  getResume,
+  type SocialLink as ResumeSocialLink,
+  type WorkExperience,
+} from '@/lib/resume'
 
 function MailIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   return (
@@ -45,6 +43,37 @@ function MailIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   )
 }
 
+function iconForPlatform(platform: string) {
+  switch (platform) {
+    case 'github':
+      return GitHubIcon
+    case 'instagram':
+      return InstagramIcon
+    case 'linkedin':
+      return LinkedInIcon
+    case 'x':
+      return XIcon
+    case 'email':
+      return MailIcon
+    default:
+      return LinkIcon
+  }
+}
+
+function LinkIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <path
+        d="M10.5 13.5 13.5 10.5M9.172 14.828l-1.415 1.415a4 4 0 1 1-5.657-5.657l1.414-1.414a4 4 0 0 1 5.657 0M14.828 9.172l1.415-1.415a4 4 0 0 1 5.657 5.657l-1.414 1.414a4 4 0 0 1-5.657 0"
+        className="stroke-zinc-400 dark:stroke-zinc-500"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
 function SocialLink({
   icon: Icon,
   ...props
@@ -58,63 +87,9 @@ function SocialLink({
   )
 }
 
-interface Role {
-  company: string;
-  title: string;
-  description: string;
-  logo?: string; // optional image URL
-  skills: string[];
-  start: string | { label: string; dateTime: string };
-  end: string | { label: string; dateTime: string }; 
-}
-
-let resume: Array<Role> = [
-  {
-    company: "DxdHub",
-    title: "Software Engineer",
-    description: "TODO",
-    skills: ["Next.js", "TypeScript", "PostgreSQL", "Tailwind CSS"],
-    logo: dxdhub.src,
-    start: "2024",
-    end: "2025"
-  },
-  {
-    company: "Apple",
-    title: "Specialist",
-    description: "TODO",
-    skills: ["Customer Experience", "Hardware Support", "Team Collaboration"],
-    start: "Jun",
-    end: "Dec 2024",
-  },
-  {
-    company: "MOH Office for Healthcare Transformation",
-    title: "Healthcare Product Engineer",
-    description: "TODO",
-    skills: ["React", "Python", "Healthcare IT", "Product Design"],
-    start: "Jan",
-    end: "Jun 2024",
-  },
-  {
-    company: "TradeBay",
-    title: "Product Owner",
-    description: "TODO",
-    skills: ["Agile", "Product Strategy", "UX", "Stakeholder Management"],
-    start: "2022",
-    end: "2022",
-  },
-];
-
-function Role({ role }: { role: Role }) {
-  const startLabel =
-    typeof role.start === "string" ? role.start : role.start.label;
-  const startDate =
-    typeof role.start === "string" ? role.start : role.start.dateTime;
-  const endLabel = typeof role.end === "string" ? role.end : role.end.label;
-  const endDate = typeof role.end === "string" ? role.end : role.end.dateTime;
-
+function Role({ role }: { role: WorkExperience }) {
   return (
     <li className="flex flex-col rounded-2xl p-4 hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors">
-      {/* Top section: logo + role info */}
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div>
@@ -129,42 +104,34 @@ function Role({ role }: { role: Role }) {
 
         <p
           className="text-xs text-zinc-400 dark:text-zinc-500 whitespace-nowrap"
-          aria-label={`${startLabel} until ${endLabel}`}
+          aria-label={`${role.start} until ${role.end}`}
         >
-          <time dateTime={startDate}>{startLabel}</time> —{" "}
-          <time dateTime={endDate}>{endLabel}</time>
+          <time dateTime={role.start}>{role.start}</time> —{' '}
+          <time dateTime={role.end}>{role.end}</time>
         </p>
       </div>
 
-      {/* Description */}
-      {/* {role.description && (
-        <p className="text-sm text-zinc-600 dark:text-zinc-300 leading-snug">
-          {role.description}
-        </p>
-      )} */}
+      <p className="mt-3 text-sm leading-snug text-zinc-600 dark:text-zinc-300">
+        {role.summary}
+      </p>
 
-      {/* Skills badges */}
-      {/* {role.skills && role.skills.length > 0 && (
+      {role.skills.length > 0 ? (
         <div className="mt-3 flex flex-wrap gap-2">
           {role.skills.map((skill) => (
             <span
               key={skill}
-              className="
-                rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-700
-                dark:bg-zinc-700 dark:text-zinc-100
-                transition-colors
-              "
+              className="rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-700 transition-colors dark:bg-zinc-700 dark:text-zinc-100"
             >
               {skill}
             </span>
           ))}
         </div>
-      )} */}
+      ) : null}
     </li>
-  );
+  )
 }
 
-function Resume() {
+function Resume({ roles }: { roles: WorkExperience[] }) {
   return (
     <div className="rounded-2xl border border-zinc-100 p-6 dark:border-zinc-700/40">
       <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center">
@@ -172,17 +139,12 @@ function Resume() {
       </h2>
 
       <ol className="mt-6 space-y-4">
-        {resume.map((role, i) => (
+        {roles.map((role, i) => (
           <Role key={i} role={role} />
         ))}
       </ol>
-
-      {/* <Button href="#" variant="secondary" className="group mt-6 w-full">
-        Download CV
-        <ArrowDownIcon className="h-4 w-4 stroke-zinc-400 transition group-active:stroke-zinc-600 dark:group-hover:stroke-zinc-50 dark:group-active:stroke-zinc-50" />
-      </Button> */}
     </div>
-  );
+  )
 }
 
 const images = [image1, image2, image3, image4, image5]
@@ -213,49 +175,35 @@ function Photos() {
 }
 
 export default async function Home() {
+  const resume = await getResume()
+
   return (
     <>
       <Container className="mt-9">
         <div className="max-w-2xl">
           <h1 className="text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100">
-            Software Engineer & Product Builder with a Purpose
+            {resume.heroIntro}
           </h1>
-          <p className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
-           I’m Pawandeep — a Software Engineer and Product Builder passionate 
-           about creating impactful digital solutions. 
-           I thrive at the intersection of technology, design, and user experience.
-           
-          I love turning complex problems into simple, elegant solutions.
-          </p>
-          <p className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
-            When I’m not coding, you’ll probably find me watching shows across genres, going for walks in the park, 
-            or volunteering with Repair Kopitiam on weekends. And sometimes, I’ll just be coding random ideas — not because I have to, but 
-              because I genuinely love keeping my mind active and exploring what’s next.
-          </p>
+          {resume.bio.map((paragraph) => (
+            <p key={paragraph} className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
+              {paragraph}
+            </p>
+          ))}
           <div className="mt-6 flex gap-6">
-            {/* TODO: Social MEDIA Links */}
-            <SocialLink href="#" aria-label="Follow on X" icon={XIcon} />
-            <SocialLink
-              href="#"
-              aria-label="Follow on Instagram"
-              icon={InstagramIcon}
-            />
-            <SocialLink
-              href="#"
-              aria-label="Follow on GitHub"
-              icon={GitHubIcon}
-            />
-            <SocialLink
-              href="#"
-              aria-label="Follow on LinkedIn"
-              icon={LinkedInIcon}
-            />
+            {resume.socialLinks.map((socialLink: ResumeSocialLink) => (
+              <SocialLink
+                key={socialLink.url}
+                href={socialLink.url}
+                aria-label={socialLink.label}
+                icon={iconForPlatform(socialLink.platform)}
+              />
+            ))}
           </div>
         </div>
       </Container>
       <Photos />
       <Container className="mt-24 md:mt-28">
-        <Resume />
+        <Resume roles={resume.workExperiences} />
       </Container>
     </>
   )

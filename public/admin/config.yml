@@ -1,0 +1,122 @@
+# Sveltia CMS configuration — https://github.com/sveltia/sveltia-cms
+# Every save commits straight to `main`, which triggers the GitHub Pages deploy.
+backend:
+  name: github
+  repo: pss-coder/website
+  branch: main
+  commit_messages:
+    create: 'Create {{collection}} “{{slug}}”'
+    update: 'Update {{collection}} “{{slug}}”'
+    delete: 'Delete {{collection}} “{{slug}}”'
+    uploadMedia: 'Upload “{{path}}”'
+    deleteMedia: 'Delete “{{path}}”'
+
+media_folder: public/uploads
+public_folder: /uploads
+
+collections:
+  - name: projects
+    label: Projects
+    label_singular: Project
+    folder: content/projects
+    extension: md
+    format: frontmatter
+    create: true
+    slug: '{{slug}}'
+    media_folder: /public/uploads/projects
+    public_folder: /uploads/projects
+    sortable_fields: [sortOrder, title]
+    summary: '{{title}}'
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: summary, label: Summary (shown on the card), widget: text }
+      - { name: techStack, label: Tech stack, widget: list, required: false, default: [] }
+      - { name: liveUrl, label: Live URL, widget: string, required: false, default: '' }
+      - { name: repoUrl, label: Repository URL, widget: string, required: false, default: '' }
+      - { name: coverImage, label: Cover image, widget: image, required: false, default: '' }
+      - name: logo
+        label: Logo
+        widget: image
+        required: false
+        default: ''
+        media_folder: /public/uploads/logos
+        public_folder: /uploads/logos
+      - { name: featured, label: Featured (shown first), widget: boolean, required: false, default: false }
+      - { name: sortOrder, label: Sort order (lower first), widget: number, value_type: int, required: false, default: 10 }
+      - name: body
+        label: More details (shown when the card is expanded; leave empty to hide the toggle)
+        widget: markdown
+        required: false
+
+  - name: posts
+    label: Blog posts
+    label_singular: Post
+    folder: content/posts
+    extension: md
+    format: frontmatter
+    create: true
+    slug: '{{slug}}'
+    media_folder: /public/uploads/posts
+    public_folder: /uploads/posts
+    sortable_fields: [date, title]
+    summary: '{{title}} — {{date}}'
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: description, label: Description, widget: text }
+      - name: date
+        label: Publish date
+        widget: datetime
+        format: YYYY-MM-DD
+        date_format: YYYY-MM-DD
+        time_format: false
+      - { name: author, label: Author, widget: string, default: Pawandeep Singh Sekhon }
+      - { name: draft, label: Draft (hidden from the site), widget: boolean, required: false, default: false }
+      - { name: coverImage, label: Cover image, widget: image, required: false, default: '' }
+      - { name: body, label: Body, widget: markdown }
+
+  - name: resume
+    label: Resume
+    files:
+      - name: resume
+        label: About & work experience
+        file: content/resume/resume.json
+        format: json
+        fields:
+          - { name: heroIntro, label: Hero headline, widget: string }
+          - { name: bio, label: Bio paragraphs, widget: list, field: { name: paragraph, label: Paragraph, widget: text } }
+          - name: workExperiences
+            label: Work experience (drag to reorder; top shows first)
+            label_singular: Role
+            widget: list
+            summary: '{{title}} at {{company}} ({{start}} – {{end}})'
+            fields:
+              - { name: company, label: Company, widget: string }
+              - { name: title, label: Job title, widget: string }
+              - { name: start, label: Start (e.g. Jan 2024), widget: string }
+              - { name: end, label: End (e.g. Present), widget: string }
+              - { name: location, label: Location, widget: string }
+              - { name: summary, label: Summary, widget: text }
+              - { name: skills, label: Skills, widget: list, required: false, default: [] }
+          - name: education
+            label: Education
+            label_singular: Entry
+            widget: list
+            summary: '{{qualification}} — {{institution}}'
+            fields:
+              - { name: institution, label: Institution, widget: string }
+              - { name: qualification, label: Qualification, widget: string }
+              - { name: start, label: Start, widget: string }
+              - { name: end, label: End, widget: string }
+          - { name: skills, label: Skills, widget: list }
+          - name: socialLinks
+            label: Social links
+            label_singular: Link
+            widget: list
+            summary: '{{platform}} — {{url}}'
+            fields:
+              - name: platform
+                label: Platform
+                widget: select
+                options: [github, linkedin, x, instagram, email, other]
+              - { name: label, label: Label (for screen readers), widget: string }
+              - { name: url, label: URL (use mailto:you@example.com for email), widget: string }

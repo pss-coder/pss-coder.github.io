@@ -1,0 +1,102 @@
+{
+  "heroIntro": "Software Engineer & Product Builder with a Purpose",
+  "bio": [
+    "I’m Pawandeep, a software engineer and product builder passionate about creating digital solutions that make everyday life a little better.",
+    "I enjoy working at the intersection of engineering, design, and user experience, turning complex problems into clear, practical products."
+  ],
+  "workExperiences": [
+    {
+      "company": "DxdHub",
+      "title": "Software Engineer",
+      "start": "2024",
+      "end": "2025",
+      "location": "Singapore",
+      "summary": "Built product features across the web stack with a focus on reliable delivery, clear UX, and maintainable frontend architecture.",
+      "skills": [
+        "Next.js",
+        "TypeScript",
+        "PostgreSQL",
+        "Tailwind CSS"
+      ]
+    },
+    {
+      "company": "Apple",
+      "title": "Specialist",
+      "start": "Jun 2024",
+      "end": "Dec 2024",
+      "location": "Singapore",
+      "summary": "Supported customers across hardware and software issues while maintaining a high bar for communication, empathy, and problem-solving.",
+      "skills": [
+        "Customer Experience",
+        "Hardware Support",
+        "Team Collaboration"
+      ]
+    },
+    {
+      "company": "MOH Office for Healthcare Transformation",
+      "title": "Healthcare Product Engineer",
+      "start": "Jan 2024",
+      "end": "Jun 2024",
+      "location": "Singapore",
+      "summary": "Worked on healthcare product initiatives spanning engineering, product thinking, and service design for real-world operational needs.",
+      "skills": [
+        "React",
+        "Python",
+        "Healthcare IT",
+        "Product Design"
+      ]
+    },
+    {
+      "company": "TradeBay",
+      "title": "Product Owner",
+      "start": "2022",
+      "end": "2022",
+      "location": "Singapore",
+      "summary": "Led product direction, aligned stakeholders, and translated user and business requirements into actionable product work.",
+      "skills": [
+        "Agile",
+        "Product Strategy",
+        "UX",
+        "Stakeholder Management"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "University Computer Science Program",
+      "qualification": "Computer Science",
+      "start": "2020",
+      "end": "2024"
+    }
+  ],
+  "skills": [
+    "Next.js",
+    "TypeScript",
+    "React",
+    "Product Thinking",
+    "UX",
+    "Systems Thinking"
+  ],
+  "socialLinks": [
+    {
+      "platform": "x",
+      "label": "Follow on X",
+      "url": "https://x.com/pss_coder?s=21"
+    },
+    {
+      "platform": "github",
+      "label": "Follow on GitHub",
+      "url": "https://github.com/pss-coder"
+    },
+    {
+      "platform": "linkedin",
+      "label": "Follow on LinkedIn",
+      "url": "https://www.linkedin.com/in/pss-coder/"
+    },
+    {
+      "platform": "email",
+      "label": "Email me",
+      "url": "mailto:pawandeepse@me.com"
+    }
+  ]
+}

@@ -2,57 +2,10 @@ import { type Metadata } from 'next'
 import Image from 'next/image'
 
 import { Card } from '@/components/Card'
+import { Prose } from '@/components/Prose'
 import { SimpleLayout } from '@/components/SimpleLayout'
-import logoAnimaginary from '@/images/logos/animaginary.svg'
-import logoCosmos from '@/images/logos/cosmos.svg'
-import logoHelioStream from '@/images/logos/helio-stream.svg'
-import logoOpenShuttle from '@/images/logos/open-shuttle.svg'
-import logoPlanetaria from '@/images/logos/planetaria.svg'
-
-import image1 from '@/images/photos/image-1.jpeg'
-
-// const projects = [
-//   {
-//     name: 'Planetaria',
-//     description:
-//       'Creating technology to empower civilians to explore space on their own terms.',
-//     techStack: ["Swift", "SwiftUI", "Core Data"],
-//     link: { href: 'http://planetaria.tech', label: 'planetaria.tech' },
-//     logo: logoPlanetaria,
-//   },
-//   {
-//     name: 'Animaginary',
-//     description:
-//       'High performance web animation library, hand-written in optimized WASM.',
-//     techStack: ["Swift", "SwiftUI", "Core Data"],
-//     link: { href: '#', label: 'github.com' },
-//     logo: logoAnimaginary,
-//   },
-//   {
-//     name: 'HelioStream',
-//     description:
-//       'Real-time video streaming library, optimized for interstellar transmission.',
-//     techStack: ["Swift", "SwiftUI", "Core Data"],
-//     link: { href: '#', label: 'github.com' },
-//     logo: logoHelioStream,
-//   },
-//   {
-//     name: 'cosmOS',
-//     description:
-//       'The operating system that powers our Planetaria space shuttles.',
-//     techStack: ["Swift", "SwiftUI", "Core Data"],
-//     link: { href: '#', label: 'github.com' },
-//     logo: logoCosmos,
-//   },
-//   {
-//     name: 'OpenShuttle',
-//     description:
-//       'The schematics for the first rocket I designed that successfully made it to orbit.',
-//     techStack: ["Swift", "SwiftUI", "Core Data"],
-//     link: { href: '#', label: 'github.com' },
-//     logo: logoOpenShuttle,
-//   },
-// ]
+import { withBasePath } from '@/lib/assetPath'
+import { getAllProjects, type Project } from '@/lib/projects'
 
 function LinkIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   return (
@@ -65,12 +18,44 @@ function LinkIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   )
 }
 
+function ChevronDownIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" {...props}>
+      <path
+        d="M4.75 6.75 8 9.75l3.25-3"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
 export const metadata: Metadata = {
   title: 'Projects',
   description: 'Things I’ve made trying to put my dent in the universe.',
 }
 
-export default function Projects() {
+function getProjectLink(project: Project) {
+  const href = project.liveUrl || project.repoUrl
+
+  if (!href) {
+    return null
+  }
+
+  try {
+    return {
+      href,
+      label: new URL(href).hostname.replace(/^www\./, ''),
+    }
+  } catch {
+    return { href, label: href }
+  }
+}
+
+export default async function Projects() {
+  const projects = await getAllProjects()
+
   return (
     <SimpleLayout
       title="Things I’ve made to make a positive impact to the world, and for my growth."
@@ -80,48 +65,79 @@ export default function Projects() {
         role="list"
         className="grid grid-cols-1 gap-x-12 gap-y-16 sm:grid-cols-2 lg:grid-cols-3"
       >
-        Coming Soon
-{/* 
-        {projects.map((project) => (
-          <Card as="li" key={project.name}>
-            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl">
-              <Image
-                src={image1}
-                alt={project.name}
-                fill
-                className="object-cover"
-                sizes="(min-width: 640px) 400px, 100vw"
-              />
-            </div>
+        {projects.map((project) => {
+          const link = getProjectLink(project)
 
-            <h2 className="mt-6 text-base font-semibold text-zinc-800 dark:text-zinc-100">
-              <Card.Link href={project.link.href}>{project.name}</Card.Link>
-            </h2>
-            <Card.Description>{project.description}</Card.Description>
-            
-            {project.techStack && (
-            <div className="relative z-20 mt-4 flex flex-wrap gap-2">
-              {project.techStack.map((tech) => (
-                <span
-                  key={tech}
-                  className="
-                    rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-700
-                    dark:bg-zinc-700 dark:text-zinc-100
-                    transition-colors
-                  "
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
-          )}
-            <p className="relative z-10 mt-6 flex text-sm font-medium text-zinc-400 transition group-hover:text-teal-500 dark:text-zinc-200">
-              <LinkIcon className="h-6 w-6 flex-none" />
-              <span className="ml-2">{project.link.label}</span>
-            </p>
-          </Card>
-        ))}
-         */}
+          return (
+            <Card as="li" key={project.slug}>
+              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl">
+                {project.coverImage ? (
+                  <Image
+                    src={withBasePath(project.coverImage)}
+                    alt={project.title}
+                    fill
+                    className="object-cover"
+                    sizes="(min-width: 640px) 400px, 100vw"
+                  />
+                ) : null}
+              </div>
+
+              <div className="mt-6 flex items-center gap-3">
+                {project.logo ? (
+                  <Image
+                    src={withBasePath(project.logo)}
+                    alt=""
+                    width={40}
+                    height={40}
+                    className="h-10 w-10 rounded-lg object-contain"
+                  />
+                ) : null}
+                <Card.Title href={link?.href}>{project.title}</Card.Title>
+              </div>
+
+              <Card.Description>{project.summary}</Card.Description>
+
+              {project.techStack.length > 0 ? (
+                <div className="relative z-20 mt-4 flex flex-wrap gap-2">
+                  {project.techStack.map((tech) => (
+                    <span
+                      key={tech}
+                      className="rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-700 transition-colors dark:bg-zinc-700 dark:text-zinc-100"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              ) : null}
+
+              {project.bodyHtml ? (
+                <details className="group/details relative z-30 mt-4 w-full">
+                  <summary className="flex cursor-pointer list-none items-center gap-1 text-sm font-medium text-teal-500 select-none [&::-webkit-details-marker]:hidden">
+                    <span className="group-open/details:hidden">More details</span>
+                    <span className="hidden group-open/details:inline">Show less</span>
+                    <ChevronDownIcon className="h-4 w-4 stroke-current transition group-open/details:rotate-180" />
+                  </summary>
+                  <Prose
+                    className="mt-3 text-sm"
+                    dangerouslySetInnerHTML={{ __html: project.bodyHtml }}
+                  />
+                </details>
+              ) : null}
+
+              {link ? (
+                <p className="relative z-10 mt-6 flex text-sm font-medium text-zinc-400 transition group-hover:text-teal-500 dark:text-zinc-200">
+                  <LinkIcon className="h-6 w-6 flex-none" />
+                  <span className="ml-2">{link.label}</span>
+                </p>
+              ) : null}
+            </Card>
+          )
+        })}
+        {projects.length === 0 ? (
+          <li className="text-sm text-zinc-600 dark:text-zinc-400">
+            No projects published yet.
+          </li>
+        ) : null}
       </ul>
     </SimpleLayout>
   )

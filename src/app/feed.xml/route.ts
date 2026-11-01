@@ -1,22 +1,24 @@
-import assert from 'assert'
-import * as cheerio from 'cheerio'
 import { Feed } from 'feed'
 
-export async function GET(req: Request) {
-  let siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+import { getAllArticles, getArticlePage } from '@/lib/articles'
+
+export const dynamic = 'force-static'
+
+export async function GET() {
+  let siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '')
 
   if (!siteUrl) {
     throw Error('Missing NEXT_PUBLIC_SITE_URL environment variable')
   }
 
   let author = {
-    name: 'Spencer Sharp',
-    email: 'spencer@planetaria.tech',
+    name: 'Pawandeep Singh Sekhon',
+    email: 'pawandeepse@me.com',
   }
 
   let feed = new Feed({
     title: author.name,
-    description: 'Your blog description',
+    description: 'Writing on software, products, and building useful things.',
     author,
     id: siteUrl,
     link: siteUrl,
@@ -28,35 +30,21 @@ export async function GET(req: Request) {
     },
   })
 
-  let articleIds = require
-    .context('../articles', true, /\/page\.mdx$/)
-    .keys()
-    .filter((key) => key.startsWith('./'))
-    .map((key) => key.slice(2).replace(/\/page\.mdx$/, ''))
+  const articles = await getAllArticles()
 
-  for (let id of articleIds) {
-    let url = String(new URL(`/articles/${id}`, req.url))
-    let html = await (await fetch(url)).text()
-    let $ = cheerio.load(html)
-
-    let publicUrl = `${siteUrl}/articles/${id}`
-    let article = $('article').first()
-    let title = article.find('h1').first().text()
-    let date = article.find('time').first().attr('datetime')
-    let content = article.find('[data-mdx-content]').first().html()
-
-    assert(typeof title === 'string')
-    assert(typeof date === 'string')
-    assert(typeof content === 'string')
+  for (const article of articles) {
+    const publicUrl = `${siteUrl}/articles/${article.slug}/`
+    const content = (await getArticlePage(article.slug))?.html
 
     feed.addItem({
-      title,
+      title: article.title,
       id: publicUrl,
       link: publicUrl,
-      content,
-      author: [author],
-      contributor: [author],
-      date: new Date(date),
+      description: article.description,
+      content: content ?? article.description,
+      author: [{ name: article.author || author.name }],
+      contributor: [{ name: article.author || author.name }],
+      date: new Date(article.date),
     })
   }
 
