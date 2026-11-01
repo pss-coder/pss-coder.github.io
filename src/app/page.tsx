@@ -14,6 +14,8 @@ import image2 from '@/images/photos/image-2.jpeg'
 import image3 from '@/images/photos/image-3.jpeg'
 import image4 from '@/images/photos/image-4.jpeg'
 import image5 from '@/images/photos/image-5.jpeg'
+import { type ArticleWithSlug, getAllArticles } from '@/lib/articles'
+import { formatDate } from '@/lib/formatDate'
 import {
   getResume,
   type SocialLink as ResumeSocialLink,
@@ -147,6 +149,61 @@ function Resume({ roles }: { roles: WorkExperience[] }) {
   )
 }
 
+function ArrowRightIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" {...props}>
+      <path
+        d="M6.75 5.75 9.25 8l-2.5 2.25"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+function Articles({ articles }: { articles: ArticleWithSlug[] }) {
+  return (
+    <div className="rounded-2xl border border-zinc-100 p-6 dark:border-zinc-700/40">
+      <div className="flex items-center justify-between">
+        <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+          Articles
+        </h2>
+        <Link
+          href="/articles"
+          className="text-xs font-medium text-zinc-500 transition hover:text-teal-500 dark:text-zinc-400 dark:hover:text-teal-400"
+        >
+          View all
+        </Link>
+      </div>
+
+      <ul className="mt-6 space-y-2">
+        {articles.map((article) => (
+          <li key={article.slug}>
+            <Link
+              href={`/articles/${article.slug}`}
+              className="group flex items-center justify-between gap-4 rounded-2xl p-4 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/40"
+            >
+              <div className="min-w-0">
+                <p className="truncate text-sm font-semibold text-zinc-900 transition group-hover:text-teal-500 dark:text-zinc-100 dark:group-hover:text-teal-400">
+                  {article.title}
+                </p>
+                <time
+                  dateTime={article.date}
+                  className="text-xs text-zinc-400 dark:text-zinc-500"
+                >
+                  {formatDate(article.date)}
+                </time>
+              </div>
+              <ArrowRightIcon className="h-4 w-4 flex-none stroke-zinc-400 transition group-hover:stroke-teal-500 dark:stroke-zinc-500" />
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
 const images = [image1, image2, image3, image4, image5]
 function Photos() {
   let rotations = ['rotate-2', '-rotate-2', 'rotate-2', 'rotate-2', '-rotate-2']
@@ -175,7 +232,7 @@ function Photos() {
 }
 
 export default async function Home() {
-  const resume = await getResume()
+  const [resume, articles] = await Promise.all([getResume(), getAllArticles()])
 
   return (
     <>
@@ -204,6 +261,11 @@ export default async function Home() {
       <Photos />
       <Container className="mt-24 md:mt-28">
         <Resume roles={resume.workExperiences} />
+        {articles.length > 0 ? (
+          <div className="mt-10">
+            <Articles articles={articles.slice(0, 5)} />
+          </div>
+        ) : null}
       </Container>
     </>
   )
