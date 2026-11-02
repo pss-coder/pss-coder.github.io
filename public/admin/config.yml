@@ -2,7 +2,7 @@
 # Every save commits straight to `main`, which triggers the GitHub Pages deploy.
 backend:
   name: github
-  repo: pss-coder/website
+  repo: pss-coder/pss-coder.github.io
   branch: main
   commit_messages:
     create: 'Create {{collection}} “{{slug}}”'
