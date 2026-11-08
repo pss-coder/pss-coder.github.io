@@ -6,7 +6,7 @@ import { SimpleLayout } from '@/components/SimpleLayout'
 export const metadata = {
   title: 'HeadDraw',
   description:
-    'A playful, hands-free drawing app for iPhone, iPad and Mac. Steer with your head, blink to lift the pen.',
+    'A playful, hands-free drawing app for iPhone and Mac. Steer with your head, blink to lift the pen.',
 }
 
 export default function HeadDraw() {
@@ -35,7 +35,7 @@ export default function HeadDraw() {
             a ZIP.
           </li>
           <li>
-            <strong>iCloud sync</strong> across iPhone, iPad and Mac, or keep
+            <strong>iCloud sync</strong> across your devices, or keep
             everything on your device.
           </li>
         </ul>
